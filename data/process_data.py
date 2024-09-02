@@ -43,6 +43,7 @@ def save_data(df: pd.DataFrame,
     save dataframe to sql
     """
     engine = create_engine(f"sqlite:///{database_filename}")
+    #https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
     df.to_sql("DisasterResponse", 
               engine, 
               index=False, 

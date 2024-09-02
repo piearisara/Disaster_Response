@@ -52,6 +52,8 @@ def build_model():
     Build machine learning model
     """
     #svd to reduce dim for faster training
+    #src: https://scikit-learn.org/0.19/auto_examples/model_selection/grid_search_text_feature_extraction.html
+    #https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -74,8 +76,9 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names) -> None:
     Y_pred = model.predict(X_test)
+    #src: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html
     for i, column in enumerate(category_names):
-        print(f"Cat: {column}\n", classification_report(Y_test.iloc[:, i], Y_pred[:, i]))
+        print(f"Cat: {column}:", classification_report(Y_test.iloc[:, i], Y_pred[:, i]))
 
 
 def save_model(model, model_filepath: str) -> None:
