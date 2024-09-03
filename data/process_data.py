@@ -25,14 +25,17 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     row = categories.iloc[0]
     #get labels' columns
     categories.columns = row.apply(lambda x: x[:-2]).tolist()
-
+    
     for column in categories:
         categories[column] = categories[column].str[-1].astype(int)
+    # drop related "2"
+    categories = categories[categories['related'] != 2]
+    
     #drop dup
     df.drop("categories", axis=1, inplace=True)
     df = pd.concat([df, categories], axis=1)
     df.drop_duplicates(inplace=True)
-    
+    assert len(df[df.duplicated()]) == 0
     return df
 
 

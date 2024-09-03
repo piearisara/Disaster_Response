@@ -45,6 +45,9 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    # Extract top 10 responses
+    counts = df.iloc[:, 4:].sum().sort_values(ascending=True).head(10)
+    category_names = list(counts.index)
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -63,6 +66,24 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=category_names,
+                    y=counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 10 Responses',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Response"
                 }
             }
         }
@@ -87,6 +108,8 @@ def go():
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
     # This will render the go.html Please see that file. 
+
+    
     return render_template(
         'go.html',
         query=query,
